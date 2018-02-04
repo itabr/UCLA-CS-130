@@ -1,1 +1,20 @@
-{{workplace_id}}
+<!doctype html>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+
+<form>
+	{% csrf_token %}
+	<input id="btn" type="button" value="button" />
+	<script type="text/javascript">
+
+		var csrf_token = $('meta[name="csrf-token"]').attr('content');
+		var ps = "problem statement" // $("input").val();
+
+		$.ajax({
+			type: "POST",
+			url: "../ajax/",
+			data: { CSRF: csrf_token}
+	    	}).done(function(data) {
+		  alert(data["tag"]);
+		});
+	</script>
+</form>
