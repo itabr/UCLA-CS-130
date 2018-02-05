@@ -58,7 +58,8 @@ def get_vsm(input_str):
 features = list(map(get_vsm, prob_statements))
 df_columns = [word for word in idf]
 output_df = pandas.DataFrame(data=features, columns=df_columns)
-output_df['labels'] = labels
+output_df['FEATURE_LABELS'] = labels
 
-filename = "".join(sys.argv[1].split(".")[:1])
+filename = sys.argv[1].split("/")
+filename = "".join(filename[len(filename)-1].split(".")[:1])
 output_df.to_csv(filename + "_features.csv", index=False)
