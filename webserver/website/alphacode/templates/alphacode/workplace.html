@@ -1,1 +1,38 @@
-{{workplace_id}}
+<!doctype html>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+
+<div>
+    <label>Tag: 
+        <spam id="SOME-DIV"></spam>
+    </label>
+</div>
+<input id="btn" type="button" value="btn" 
+style="margin: 10px 10px 10px 5px"
+
+/>
+<div>
+<textarea  id="ps" cols="50" formcontrolname="bodyControl" name="body"  rows="20" class="form-control" style="margin-left: 0px; height: 290px; width: 384px;"></textarea>
+</div>
+
+<div id="MESSAGE-DIV"></div>
+
+<script type="text/javascript">
+    var frm = $('#btn');
+    frm.click(function (e) {
+    	e.preventDefault();
+        $.ajax({
+            type: 'GET',
+            url: "../ajax/",
+            data: {
+                Smt: $('#ps').val(),
+            },
+            success: function (response) {
+                $("#SOME-DIV").html(response);
+            },
+            error: function(data,status) {
+                $("#MESSAGE-DIV").html(status);
+            }
+        });
+        return false;
+    });
+</script>
