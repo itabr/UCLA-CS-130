@@ -7,6 +7,7 @@ from django.utils import timezone
 class RandomURLs(models.Model):
     id = models.AutoField(primary_key=True)
     random_url = models.CharField(max_length=20)
+    group_name = models.CharField(max_length=30)
     timestamp = models.DateTimeField()
     valid = models.BooleanField()
 
