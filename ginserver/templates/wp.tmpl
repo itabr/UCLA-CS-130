@@ -1,0 +1,88 @@
+<html>
+
+<head>
+	<title>{{ .title }}</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/codemirror/CodeMirror/master/lib/codemirror.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.34.0/theme/material.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.34.0/codemirror.min.js"></script>
+	<script src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/mode/python/python.min.js"></script>
+</head>
+
+<style>
+	.btn {
+		background-color: DeepSkyBlue;
+		border: none;
+		color: white;
+		padding: 10px 32px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+		margin: 4px 2px;
+		cursor: pointer;
+	}
+</style>
+
+<body>
+	<h1>{{ .title }}</h1>
+
+	<h2> tag is : <span id="tag"></span></h2>
+	<input id="TagBtn" class="btn" type="button" value="btn" />
+
+	<textarea id="editor"></textarea>
+
+	<input id="SendBtn" class="btn" type="button" value="send" />
+
+	<script>
+		let myTextArea = document.getElementById("editor");
+		let editor = CodeMirror.fromTextArea(myTextArea, {
+			lineNumbers: true,
+			lineWrapping: true,
+			autofocus: true,
+			theme: "material",
+			mode:  "python"
+		});
+
+		let CursorPosition = editor.getCursor();
+
+
+		$("#TagBtn").click(function() {
+			var val = editor.getDoc().getValue();
+			if(val){
+ 				$.get("/ajax",
+				     { Smt: val, Tag: "" },
+				     function(data) {
+					$("#tag").text(data.Tag);
+			     	});
+			}
+		});
+
+		let url = "ws://" + window.location.host + "/ws";
+		let ws = new WebSocket(url);
+
+		ws.onmessage = function(msg) {
+			var line = msg.data;
+			CursorPosition = editor.getCursor();
+			editor.getDoc().setValue(line);
+			editor.setCursor(CursorPosition);
+		};
+
+		editor.on('keyup', function () {
+			ws.send(editor.getDoc().getValue());
+		})
+
+		// $("#SendBtn").click(function() {
+		// 	if (editor.getDoc().getValue() !== "") {
+		// 		CursorPosition = editor.getCursor();
+		// 		ws.send(editor.getDoc().getValue());
+		// 	}
+		// });
+
+	</script>
+
+
+</body>
+
+</html>
