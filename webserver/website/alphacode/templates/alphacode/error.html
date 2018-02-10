@@ -1,0 +1,9 @@
+<h2>The page you are trying to visit doesn't exist</h2>
+<button action="http://google.com" id="btn" name="redirect" type='button'>Go Back</button>
+
+<script>
+// onclick event is assigned to the #button element.
+document.getElementById("btn").onclick = function() {
+  window.location.href = "http://127.0.0.1:8000/alphacode/";
+};
+</script>
