@@ -1,17 +1,35 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"github.com/sergi/go-diff/diffmatchpatch"
 	"gopkg.in/olahol/melody.v1"
 )
+
+func update(text1 string, text2 string) (string, []bool) {
+	dmp := diffmatchpatch.New()
+
+	diffs := dmp.DiffMain(text1, text2, false)
+
+	patchs := dmp.PatchMake(diffs)
+
+	result, applied := dmp.PatchApply(patchs, text1)
+
+	return result, applied
+}
 
 // main function
 func main() {
 
 	r := gin.Default()
+
+	r.Static("/assets", "./assets")
 
 	r.LoadHTMLGlob("templates/*")
 
@@ -26,11 +44,44 @@ func main() {
 	r.GET("/workplace/:key", Workplace)
 
 	r.GET("/ws", func(c *gin.Context) {
+
 		m.HandleRequest(c.Writer, c.Request)
 	})
 
 	m.HandleMessage(func(s *melody.Session, msg []byte) {
-		m.Broadcast(msg)
+
+		f, err := os.OpenFile("workplaces/test", os.O_RDWR, 0755)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		FileInfo, err := f.Stat()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		b := make([]byte, FileInfo.Size())
+		f.Read(b)
+
+		dmp := diffmatchpatch.New()
+
+		diffs := dmp.DiffMain(string(b), string(msg), false)
+
+		patchs := dmp.PatchMake(diffs)
+
+		data, err := json.Marshal(&patchs)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		result, applied := dmp.PatchApply(patchs, string(b))
+		fmt.Println(result, applied)
+
+		fmt.Println(string(data))
+
+		m.Broadcast(data)
+
 	})
 
 	r.Run(":8080")
@@ -71,7 +122,23 @@ func Ajax(c *gin.Context) {
 
 // /workplace/:key
 func Workplace(c *gin.Context) {
+	key := c.Param("key")
+
+	f, err := os.OpenFile("workplaces/"+key, os.O_RDWR|os.O_CREATE, 0755)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	FileInfo, err := f.Stat()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	b := make([]byte, FileInfo.Size())
+	f.Read(b)
+
 	c.HTML(http.StatusOK, "wp.tmpl", gin.H{
 		"title": "workplace page",
+		"data":  string(b),
 	})
 }
