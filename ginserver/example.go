@@ -77,7 +77,8 @@ func main() {
 		fmt.Println(string(data))
 
 		ioutil.WriteFile("workplaces/test", []byte(result), 0644)
-		m.Broadcast(data)
+		m.BroadcastOthers([]byte(data), s)
+		// m.Broadcast(data)
 
 	})
 

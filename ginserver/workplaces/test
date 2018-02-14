@@ -3,5 +3,9 @@ import glob
 import unittest
 from time import sleep
 from appium import webdriver
+bjhk
+PLATFORM_VERSION = '4.4'nvgbhjkjk
 
-PLATFORM_VERSION = '4.4'
+
+
+jkm
