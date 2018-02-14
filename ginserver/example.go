@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -54,7 +55,6 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-
 		FileInfo, err := f.Stat()
 		if err != nil {
 			log.Fatal(err)
@@ -64,11 +64,8 @@ func main() {
 		f.Read(b)
 
 		dmp := diffmatchpatch.New()
-
 		diffs := dmp.DiffMain(string(b), string(msg), false)
-
 		patchs := dmp.PatchMake(diffs)
-
 		data, err := json.Marshal(&patchs)
 		if err != nil {
 			fmt.Println(err)
@@ -77,9 +74,9 @@ func main() {
 
 		result, applied := dmp.PatchApply(patchs, string(b))
 		fmt.Println(result, applied)
-
 		fmt.Println(string(data))
 
+		ioutil.WriteFile("workplaces/test", []byte(result), 0644)
 		m.Broadcast(data)
 
 	})
