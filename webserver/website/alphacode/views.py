@@ -3,9 +3,14 @@ from django.http import HttpResponse
 import string
 import random
 import json
+import time
+import threading
+
 
 from alphacode.models import RandomURLs
 from django.utils import timezone
+  
+
 #alphacode/
 def index(request):
     context = {
@@ -14,25 +19,32 @@ def index(request):
 
 #create/
 def create(request):
+    groupName = request.GET.get('name')
     N = 16
-    random_string = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(N))
-    Row = RandomURLs(random_url=random_string, timestamp=timezone.now(), valid=True)
+    while True:
+        random_string = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(N))
+        try:
+            row = RandomURLs.objects.get(random_url=random_string)
+        except RandomURLs.DoesNotExist:
+            break  
+    Row = RandomURLs(random_url=random_string, group_name=groupName, timestamp=timezone.now(), valid=True)
     Row.save()
     return redirect('workplace-view', workplace_id=random_string)
 
 #alphacode/(workplace_id)
 def workplace(request,workplace_id):
-    context = {
-        "workplace_id": workplace_id,
-    }
     try:
-        RandomURLs.objects.get(random_url=workplace_id)
+        groupName = RandomURLs.objects.get(random_url=workplace_id)
     except RandomURLs.DoesNotExist:
         return redirect('error-view')
+    context = {
+        "workplace_id": workplace_id,
+        "group_name"  : groupName.group_name,
+    }
     return render(request,'alphacode/workplace.html',context)
 
 
-def whatever(request):
+def getTag(request):
     #       run ML function for the tag here
     #       input string
     #       output string
