@@ -54,11 +54,3 @@ try:
 		print("Failure: TagPredictor - prediction is not correct!")
 except Exception, e:
 	print("Failure: TagPredictor - " + str(e))
-
-#test endpoint.py (assumed to be running)
-try:
-	#run tests
-	pass
-except Exception, e:
-	print("Failure: " + str(e))
-
