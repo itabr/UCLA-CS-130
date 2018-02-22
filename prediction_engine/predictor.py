@@ -28,7 +28,7 @@ class VSMSampleMapper(object):
 				ret[word] = 1
 		return ret
 
-	def norm_magnitude_vector(self, input_vec):
+	def _norm_magnitude_vector(self, input_vec):
 		sum_squares = sum(map(lambda x: x**2, input_vec))
 		magnitude = sum_squares**.5
 		if magnitude == 0:
@@ -38,7 +38,7 @@ class VSMSampleMapper(object):
 	def map_sample(self, sample):
 		word_counts = self._get_word_counts(self._string_to_words(sample))
 		conversion = [word_counts[word] * self.idf[word] if word in word_counts else 0 for word in self.idf]
-		return self.norm_magnitude_vector(conversion)
+		return self._norm_magnitude_vector(conversion)
 
 class RidgeCLF(object):
 	def __init__(self, prefix = ""):
