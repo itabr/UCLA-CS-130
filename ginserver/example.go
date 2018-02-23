@@ -13,18 +13,6 @@ import (
 	"gopkg.in/olahol/melody.v1"
 )
 
-func update(text1 string, text2 string) (string, []bool) {
-	dmp := diffmatchpatch.New()
-
-	diffs := dmp.DiffMain(text1, text2, false)
-
-	patchs := dmp.PatchMake(diffs)
-
-	result, applied := dmp.PatchApply(patchs, text1)
-
-	return result, applied
-}
-
 // main function
 func main() {
 
@@ -66,20 +54,21 @@ func main() {
 		dmp := diffmatchpatch.New()
 		diffs := dmp.DiffMain(string(b), string(msg), false)
 		patchs := dmp.PatchMake(diffs)
+
 		data, err := json.Marshal(&patchs)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
+		if len(patchs) > 0 {
+			result, applied := dmp.PatchApply(patchs, string(b))
+			fmt.Println(result, applied)
 
-		result, applied := dmp.PatchApply(patchs, string(b))
-		fmt.Println(result, applied)
-		fmt.Println(string(data))
+			ioutil.WriteFile("workplaces/test", []byte(result), 0644)
+			m.BroadcastOthers([]byte(data), s)
+		}
 
-		ioutil.WriteFile("workplaces/test", []byte(result), 0644)
-		m.BroadcastOthers([]byte(data), s)
-		// m.Broadcast(data)
-
+		f.Close()
 	})
 
 	r.Run(":8080")
@@ -136,7 +125,7 @@ func Workplace(c *gin.Context) {
 	f.Read(b)
 
 	c.HTML(http.StatusOK, "wp.tmpl", gin.H{
-		"title": "workplace page",
+		"title": "AlphaCode",
 		"data":  string(b),
 	})
 }
