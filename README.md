@@ -37,3 +37,6 @@ CS130 open source project
     Quit the server with CONTROL-C.
    ``` 
    * Check the server by going to http://127.0.0.1:8000/alphacode in your browser 
+
+## Running test cases for web server 
+    your_path/CS130/webserver/website$ python manage.py test
