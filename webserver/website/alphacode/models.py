@@ -14,5 +14,30 @@ class RandomURLs(models.Model):
     def __str__(self):
         return self.random_url
 
-    def is_expired(self):
-        return self.timestamp >= timezone.now() - datetime.timedelta(days=1)
+    def isExpired(self, timespan, unit="hour"):
+        '''
+        Inputs:
+        timespan: The lasting time for URL
+        unit: The unit for lasting time, the default unit is hour
+              The seconds mode is for testing
+        Output:
+        True if the current time exceeds the timespan of URL
+        False otherwise 
+        '''
+        timediff = 0
+        if (unit == "hour"):
+            timediff = datetime.timedelta(hours=timespan)
+        elif (unit == "seconds"):
+            timediff = datetime.timedelta(seconds=timespan)
+
+        #print(timediff)
+        #print(timezone.now() - self.timestamp)
+        return  timediff <= timezone.now() - self.timestamp
+
+    def setValidity(self, validity):
+        '''
+        Inputs:
+           validity (Boolean) : Set the validity of the URL
+        '''
+        self.valid = validity
+        self.save()
