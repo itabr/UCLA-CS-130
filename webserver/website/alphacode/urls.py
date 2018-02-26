@@ -6,10 +6,9 @@ from alphacode.models import RandomURLs
 
 urlpatterns = [
     url(r'^$', views.index, name='post_list'),
-    url(r'^create$', views.create, name='create-view'),
 
     url(r'create/', views.create, name='create-view'),
     url(r'ajax/', views.getTag, name='ajax-view'),
     url(r'error/', views.error_page, name='error-view'),
-    url(r'<workplace_id>/', views.workplace, name='workplace-view'),
+    url(r'(?P<workplace_id>.*)/', views.workplace, name='workplace-view'),
 ]
