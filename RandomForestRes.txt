@@ -1,0 +1,408 @@
+math
+             precision    recall  f1-score   support
+
+          0       0.57      0.67      0.62       201
+          1       0.57      0.46      0.51       188
+
+avg / total       0.57      0.57      0.57       389
+
+0.570694087404
+number of positive samples 777
+
+
+dp
+             precision    recall  f1-score   support
+
+          0       0.59      0.75      0.66       199
+          1       0.70      0.53      0.60       223
+
+avg / total       0.65      0.63      0.63       422
+
+0.632701421801
+number of positive samples 844
+
+
+geometry
+             precision    recall  f1-score   support
+
+          0       0.65      0.93      0.76        42
+          1       0.92      0.61      0.73        54
+
+avg / total       0.80      0.75      0.75        96
+
+0.75
+number of positive samples 192
+
+
+implementation
+             precision    recall  f1-score   support
+
+          0       0.55      0.57      0.56       313
+          1       0.53      0.51      0.52       300
+
+avg / total       0.54      0.54      0.54       613
+
+0.543230016313
+number of positive samples 1226
+
+
+flows
+             precision    recall  f1-score   support
+
+          0       0.41      0.58      0.48        12
+          1       0.55      0.38      0.44        16
+
+avg / total       0.49      0.46      0.46        28
+
+0.464285714286
+number of positive samples 56
+
+
+greedy
+             precision    recall  f1-score   support
+
+          0       0.57      0.73      0.64       190
+          1       0.65      0.49      0.56       199
+
+avg / total       0.61      0.60      0.60       389
+
+0.60411311054
+number of positive samples 778
+
+
+2-sat
+             precision    recall  f1-score   support
+
+          0       0.50      1.00      0.67         3
+          1       1.00      0.25      0.40         4
+
+avg / total       0.79      0.57      0.51         7
+
+0.571428571429
+number of positive samples 14
+
+
+binarysearch
+             precision    recall  f1-score   support
+
+          0       0.58      0.81      0.67        94
+          1       0.71      0.45      0.55       101
+
+avg / total       0.65      0.62      0.61       195
+
+0.620512820513
+number of positive samples 389
+
+
+bitmasks
+             precision    recall  f1-score   support
+
+          0       0.60      0.76      0.68        34
+          1       0.70      0.53      0.60        36
+
+avg / total       0.66      0.64      0.64        70
+
+0.642857142857
+number of positive samples 140
+
+
+bruteforce
+             precision    recall  f1-score   support
+
+          0       0.50      0.72      0.59       143
+          1       0.61      0.38      0.47       163
+
+avg / total       0.56      0.54      0.53       306
+
+0.539215686275
+number of positive samples 612
+
+
+chineseremaindertheorem
+             precision    recall  f1-score   support
+
+          0       0.33      1.00      0.50         1
+          1       1.00      0.33      0.50         3
+
+avg / total       0.83      0.50      0.50         4
+
+0.5
+number of positive samples 8
+
+
+combinatorics
+             precision    recall  f1-score   support
+
+          0       0.66      0.80      0.72        54
+          1       0.78      0.63      0.70        60
+
+avg / total       0.72      0.71      0.71       114
+
+0.710526315789
+number of positive samples 228
+
+
+constructivealgorithms
+             precision    recall  f1-score   support
+
+          0       0.62      0.72      0.67       111
+          1       0.68      0.58      0.63       115
+
+avg / total       0.65      0.65      0.65       226
+
+0.650442477876
+number of positive samples 452
+
+
+datastructures
+             precision    recall  f1-score   support
+
+          0       0.58      0.66      0.62       148
+          1       0.64      0.56      0.60       159
+
+avg / total       0.61      0.61      0.61       307
+
+0.605863192182
+number of positive samples 614
+
+
+dfsandsimilar
+             precision    recall  f1-score   support
+
+          0       0.65      0.67      0.66       102
+          1       0.64      0.62      0.63        97
+
+avg / total       0.64      0.64      0.64       199
+
+0.643216080402
+number of positive samples 398
+
+
+divideandconquer
+             precision    recall  f1-score   support
+
+          0       0.55      0.81      0.65        21
+          1       0.69      0.39      0.50        23
+
+avg / total       0.62      0.59      0.57        44
+
+0.590909090909
+number of positive samples 87
+
+
+expressionparsing
+             precision    recall  f1-score   support
+
+          0       0.86      0.75      0.80         8
+          1       0.78      0.88      0.82         8
+
+avg / total       0.82      0.81      0.81        16
+
+0.8125
+number of positive samples 31
+
+
+fft
+             precision    recall  f1-score   support
+
+          0       1.00      0.67      0.80         6
+          1       0.60      1.00      0.75         3
+
+avg / total       0.87      0.78      0.78         9
+
+0.777777777778
+number of positive samples 17
+
+
+games
+             precision    recall  f1-score   support
+
+          0       0.95      0.95      0.95        20
+          1       0.95      0.95      0.95        19
+
+avg / total       0.95      0.95      0.95        39
+
+0.948717948718
+number of positive samples 77
+
+
+graphmatchings
+             precision    recall  f1-score   support
+
+          0       0.54      0.78      0.64         9
+          1       0.50      0.25      0.33         8
+
+avg / total       0.52      0.53      0.49        17
+
+0.529411764706
+number of positive samples 34
+
+
+graphs
+             precision    recall  f1-score   support
+
+          0       0.63      0.85      0.72        75
+          1       0.82      0.56      0.67        87
+
+avg / total       0.73      0.70      0.69       162
+
+0.697530864198
+number of positive samples 324
+
+
+hashing
+             precision    recall  f1-score   support
+
+          0       0.61      0.91      0.73        22
+          1       0.82      0.41      0.55        22
+
+avg / total       0.71      0.66      0.64        44
+
+0.659090909091
+number of positive samples 88
+
+
+matrices
+             precision    recall  f1-score   support
+
+          0       0.44      0.57      0.50        14
+          1       0.45      0.33      0.38        15
+
+avg / total       0.45      0.45      0.44        29
+
+0.448275862069
+number of positive samples 57
+
+
+meet-in-the-middle
+             precision    recall  f1-score   support
+
+          0       0.83      0.83      0.83         6
+          1       0.67      0.67      0.67         3
+
+avg / total       0.78      0.78      0.78         9
+
+0.777777777778
+number of positive samples 17
+
+
+numbertheory
+             precision    recall  f1-score   support
+
+          0       0.64      0.76      0.70        62
+          1       0.69      0.56      0.62        59
+
+avg / total       0.67      0.66      0.66       121
+
+0.661157024793
+number of positive samples 241
+
+
+probabilities
+             precision    recall  f1-score   support
+
+          0       0.85      0.82      0.84        28
+          1       0.81      0.84      0.82        25
+
+avg / total       0.83      0.83      0.83        53
+
+0.830188679245
+number of positive samples 106
+
+
+schedules
+             precision    recall  f1-score   support
+
+          0       0.67      1.00      0.80         2
+          1       0.00      0.00      0.00         1
+
+avg / total       0.44      0.67      0.53         3
+
+0.666666666667
+number of positive samples 6
+
+
+shortestpaths
+             precision    recall  f1-score   support
+
+          0       0.62      0.73      0.67        22
+          1       0.76      0.66      0.70        29
+
+avg / total       0.70      0.69      0.69        51
+
+0.686274509804
+number of positive samples 102
+
+
+sortings
+             precision    recall  f1-score   support
+
+          0       0.47      0.72      0.57        79
+          1       0.64      0.38      0.48       103
+
+avg / total       0.57      0.53      0.52       182
+
+0.527472527473
+number of positive samples 364
+
+
+strings
+             precision    recall  f1-score   support
+
+          0       0.70      0.63      0.66        62
+          1       0.65      0.71      0.68        59
+
+avg / total       0.67      0.67      0.67       121
+
+0.669421487603
+number of positive samples 242
+
+
+stringsuffixstructures
+             precision    recall  f1-score   support
+
+          0       0.86      0.46      0.60        13
+          1       0.53      0.89      0.67         9
+
+avg / total       0.72      0.64      0.63        22
+
+0.636363636364
+number of positive samples 43
+
+
+ternarysearch
+             precision    recall  f1-score   support
+
+          0       0.30      0.60      0.40         5
+          1       0.50      0.22      0.31         9
+
+avg / total       0.43      0.36      0.34        14
+
+0.357142857143
+number of positive samples 27
+
+
+trees
+             precision    recall  f1-score   support
+
+          0       0.74      0.75      0.74        67
+          1       0.71      0.70      0.71        60
+
+avg / total       0.72      0.72      0.72       127
+
+0.724409448819
+number of positive samples 253
+
+
+twopointers
+             precision    recall  f1-score   support
+
+          0       0.47      0.67      0.55        39
+          1       0.54      0.34      0.42        44
+
+avg / total       0.51      0.49      0.48        83
+
+0.493975903614
+number of positive samples 165
+
+
