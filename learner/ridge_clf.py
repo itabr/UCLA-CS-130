@@ -23,8 +23,9 @@ labels = list(map(string_to_vector, labels))
 
 y = MultiLabelBinarizer()
 clf = RidgeClassifierCV()
+
 score = clf.fit(features, y.fit_transform(labels)).score(features, y.fit_transform(labels), average="samples")
-print score
+
 f = open("ridge_clf.txt", 'w')
 f.write(pickle.dumps(clf))
 f.close()
