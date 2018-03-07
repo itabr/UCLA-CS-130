@@ -1,7 +1,12 @@
 from flask import Flask, request, jsonify
 from prediction_engine.predictor import TagPredictor
+import sys
 app = Flask(__name__)
-predictor = TagPredictor("ridge/vsm", parameters_path = "prediction_engine/")
+
+path_prefix = "/".join(sys.argv[0].split("/")[:-1])
+if len(path_prefix) > 0:
+	path_prefix += "/"
+predictor = TagPredictor("ridge/vsm", parameters_path = path_prefix + "prediction_engine/")
 
 @app.route('/', methods=['POST'])
 def responder():
