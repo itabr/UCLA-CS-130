@@ -23,3 +23,5 @@ def responder():
 	except Exception, e:
 		return jsonify({'error': 'internal server error: ' + str(e)}), 500
 		
+if __name__ == "__main__":
+	app.run()
