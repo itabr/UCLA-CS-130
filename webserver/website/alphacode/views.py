@@ -12,7 +12,7 @@ from django.utils import timezone
   
 from alphacode.machine_learning import tag
 
-
+HOURS_OF_A_DAY = 24
 #alphacode/
 def index(request):
     return render(request,'alphacode/index.html')
@@ -42,6 +42,9 @@ def createapi(request):
 def workplace(request,workplace_id):
     try:
         groupName = RandomURLs.objects.get(random_url=workplace_id)
+        if (groupName.valid == False) or (groupName.isExpired(HOURS_OF_A_DAY, unit="hour")):
+            groupName.setValidity(False)
+            return redirect('error-view')
     except RandomURLs.DoesNotExist:
         return redirect('error-view')
     context = {
