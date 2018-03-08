@@ -24,6 +24,13 @@ def create(request):
     random_string = ''.join(random.choice(string.digits) for _ in range(N))
     return redirect(workplace, workplace_id=random_string)
 
+
+def createapi(request):
+    groupName = "alphacode"
+    N = 16
+    random_string = ''.join(random.choice(string.digits) for _ in range(N))
+    return HttpResponse(random_string)
+
 #alphacode/(workplace_id)
 def workplace(request,workplace_id):
     # try:
@@ -41,10 +48,10 @@ def getTag(request):
     #       input string
     #       output string
     data = request.GET.get('Smt')
+    print(tag.tag(data))
     # print(tag.tag(data))
     # json data is just a JSON string now. 
     return HttpResponse(tag.tag(data))
-        
 
 def error_page(request):
     context = {
