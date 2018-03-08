@@ -48,7 +48,6 @@ def getTag(request):
     #       input string
     #       output string
     data = request.GET.get('Smt')
-    print(tag.tag(data))
     # print(tag.tag(data))
     # json data is just a JSON string now. 
     return HttpResponse(tag.tag(data))
