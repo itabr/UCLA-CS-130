@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.conf.urls import url, include
 from alphacode import views
 
+admin.autodiscover()
+
 urlpatterns = [
     url('admin/', admin.site.urls),
 	url('alphacode/', include('alphacode.urls')),
