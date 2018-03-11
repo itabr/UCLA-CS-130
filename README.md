@@ -48,3 +48,5 @@ CS130 open source project
 
 ## Running test cases for web server 
     your_path/CS130/webserver/website$ python manage.py test
+
+open -a Google\ Chrome --args --disable-web-security --user-data-dir
