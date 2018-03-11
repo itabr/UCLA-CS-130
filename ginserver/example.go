@@ -20,6 +20,8 @@ func main() {
 	r := gin.Default()
 
 	r.Static("/assets", "./assets")
+	r.StaticFile("/bg.jpg", "./assets/bg.jpg")
+	r.StaticFile("/giphy.gif", "./assets/giphy.gif")
 
 	r.LoadHTMLGlob("templates/*")
 
