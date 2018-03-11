@@ -1,41 +1,106 @@
 <html>
 
 <head>
-	<title>{{ .title }}</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/codemirror/CodeMirror/master/lib/codemirror.css">
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.34.0/theme/material.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.34.0/codemirror.min.js"></script>
-	<script src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/mode/python/python.min.js"></script>
+  <title>{{ .title }}</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/codemirror/CodeMirror/master/lib/codemirror.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.34.0/theme/material.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.34.0/codemirror.min.js"></script>
+  <script src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/mode/python/python.min.js"></script>
   <script src="/assets/diff_match_patch.js"></script>
-  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+    crossorigin="anonymous">
+
   <style>
-  .material {
-  background-color: #263238;
-  color: rgba(233, 237, 237, 1);
-  font-family: monospace;
-  height: calc(100%);
+
+    .material {
+      background-color: #263238;
+      color: rgba(233, 237, 237, 1);
+      font-family: monospace;
+      height: calc(100% - 16px);
+      margin: 8px;
+    }
+
+    /* .bg{
+      background-image: url("/bg.jpg");
+      background-repeat: no-repeat;
+      opacity: 0.5;
+      height: calc(100%);
+      position: absolute;
+      top:0; 
+      left:0;
+      z-index: 100;
+
+    } */
+
+     .bg:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: url("/giphy.gif");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+    opacity: .5;
 }
-</style>
+
+    .parent{
+      position: relative;
+      z-index: 1;
+      height: calc(100%);
+    }
+    .work {
+      margin: 100px auto 10px auto;
+      display: table;
+      background-color: black;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .btn {
+      margin: 0 auto;
+      display: table;
+      padding: 10px;
+    }
+
+  </style>
 </head>
 
 <body>
-<div class="material">
-<h1 style="font-size: 72px; text-align: center;">AlphaCode</h1>
-<button onclick="myFunction()" type="submit" value="Submit">Start Workpace</button>
-<script>
-  function myFunction() {
-    $.get({
-      url: "http://127.0.0.1:8000/createapi/",
-      success: function (response) {
-        window.location.href = "http://127.0.0.1:8080/workplace/" + response
-      }
-    });
-  }
+  <div class="material">
+      <div style="height: 100%;">
+  <div class="parent"><div class="bg"></div>
 
-</script>
+      <h1 style="font-size: 72px; text-align: center; padding: 100px 50px 50px 50px;">AlphaCode</h1>
+    <div class="col-md-12 text-center">
+      <div class="work text-left">
+        <pre style="color: white;">AlphaCode is a web application that generates the tags of algorithm word problems. These tags are 
+intended as hints to help the user solve the problem by specifying the class of the problem and/or 
+class of the solution. A user may copy one such word problem and paste it in a space provided by 
+the application, then click a button to get the word problem’s tag. The application also provides 
+an environment for multiple users to collaborate with shared code to solve the problem, for purposes 
+such as pair programming.</pre>
+      </div>
+    </div>
 
+    <div class="col-md-12 text-center" style="padding: 50px;">
+      <button onclick="myFunction()" type="button" class="btn btn-primary">Start Workpace</button>
+      <script>
+        function myFunction() {
+          $.get({
+            url: "http://127.0.0.1:8000/createapi/",
+            success: function (response) {
+              window.location.href = "http://127.0.0.1:8080/workplace/" + response
+            }
+          });
+        }
+      </script>
+    </div>
 </div>
 
 </body>
