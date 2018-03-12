@@ -46,7 +46,17 @@ CS130 open source project
    ``` 
    * Check the server by going to http://127.0.0.1:8000/alphacode in your browser 
 
-## Running test cases for web server 
-    your_path/CS130/webserver/website$ python manage.py test
+## Running test cases for web server
+``` 
+$ python manage.py test
+```
 
+## Running Ginserver
+1. Turn off the security of your Chrome browser
+```
 open -a Google\ Chrome --args --disable-web-security --user-data-dir
+```
+2. Run the command
+```
+go run example.go
+```
