@@ -27,10 +27,6 @@ func main() {
 
 	m := melody.New()
 
-	r.GET("/create", Create)
-
-	r.GET("/new", Create)
-
 	r.GET("/", GetHomePage)
 
 	r.GET("/workplace/:key", Workplace)
@@ -84,23 +80,6 @@ func GetHomePage(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.tmpl", gin.H{
 		"title": "Main page",
 	})
-}
-
-// /create
-func Create(c *gin.Context) {
-	// TODO
-	resp, err := http.Get("http://127.0.0.1:8000/createapi/")
-	if err != nil {
-		// handle error
-	}
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		// handle error
-	}
-	log.Printf(string(body))
-
-	key := "test"
-	c.Redirect(http.StatusMovedPermanently, "/workplace/"+key)
 }
 
 // /workplace/:key
