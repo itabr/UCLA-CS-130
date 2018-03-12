@@ -8,9 +8,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from keras.preprocessing.text import hashing_trick
 from keras.models import load_model
 
-tfidf_labels = ["math", "dp", "geometry", "combinatorics", "datastructures",
-	"games", "graphs", "probabilities", "sortings", "strings", "twopointers"]
-nn_labels = ["implementation", "search", "greedy"] # games? numbertheory? strings?
+tfidf_labels = ["math", "dp", "datastructure", "greedy", "graphs", "probabilities", "sortings", "strings", "numbertheory"]
+nn_labels = ["combinatorics", "games", "geometry", "search"]
 hashing_trick_max_features = 20000
 nn_features_max_size = 5000
 confidence_threshold = .5
