@@ -1,7 +1,7 @@
 # CS130
 CS130 open source project
 
-## Luanching the server locally
+## Luanching the server (Local)
 
 1. Download the source code to your desired path
 
@@ -12,7 +12,7 @@ CS130 open source project
     ```
     * Luaching the virtualenv by typing the command
     ``` shell
-    your_path/CS130/webserver/venv$ source bin/activate
+    $ source bin/activate
     ``` 
     * You should see **(venv)** before your command prompt
     * If you want to leave venv, type "deactivate"
@@ -22,9 +22,17 @@ CS130 open source project
     ```
     cd your_path/CS130/webserver/website
     ```
-    * Run the command
+    * Before running the server, the database should be setup by running the command
     ```
-    your_path/CS130/webserver/website$ python manage.py runserver
+    $ python manage.py migrate
+    ```
+    &nbsp; &nbsp; &nbsp; &nbsp;If the previous command doesn't work, run the following instead:
+    ```
+    $ python manage.py syncdb 
+    ```
+    * Running the server 
+    ```
+    $ python manage.py runserver
     ```
    * You should see the information like this
    ```
@@ -40,3 +48,5 @@ CS130 open source project
 
 ## Running test cases for web server 
     your_path/CS130/webserver/website$ python manage.py test
+
+open -a Google\ Chrome --args --disable-web-security --user-data-dir

@@ -5,6 +5,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.34.0/codemirror.min.js"></script>
     <script src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/mode/javascript/javascript.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/mode/xml/xml.js"></script>
 
 <div>
     <label>Tag: 
@@ -21,9 +23,9 @@
 <div style="margin: 0px 10px 10px 5px">
     <select id="setLanguage" onchange="getSelectValue()">
     <option value="python">Python</option>
-    <option value="Go">Javascript</option>
+    <option value="javascript">Javascript</option>
     <option value="java">Java</option>
-    <option value="c++">C++</option>
+    <option value="php">Php</option>
 </select>
 </div>
 <div>
@@ -37,8 +39,8 @@
             lineNumbers: true,
             lineWrapping: true,
             autofocus: true,
-            theme: "elegant",
-            mode:  "text/x-go"
+            theme: "material",
+            mode:  "python"
         });
 
         let doc = editor.getDoc();
@@ -52,7 +54,7 @@
     }
     var frm = $('#btn');
     frm.click(function () {
-    	var val = doc.getValue();
+        var val = doc.getValue();
         $.get({
             url: "../ajax/",
             data: {

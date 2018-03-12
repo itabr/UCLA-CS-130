@@ -10,12 +10,12 @@ import threading
 from alphacode.models import RandomURLs
 from django.utils import timezone
   
+from alphacode.machine_learning import tag
 
+HOURS_OF_A_DAY = 24
 #alphacode/
 def index(request):
-    context = {
-    }
-    return render(request,'alphacode/index.html',context)
+    return render(request,'alphacode/index.html')
 
 #create/
 def create(request):
@@ -29,12 +29,22 @@ def create(request):
             break  
     Row = RandomURLs(random_url=random_string, group_name=groupName, timestamp=timezone.now(), valid=True)
     Row.save()
-    return redirect('workplace-view', workplace_id=random_string)
+    return redirect(workplace, workplace_id=random_string)
+
+
+def createapi(request):
+    groupName = "alphacode"
+    N = 16
+    random_string = ''.join(random.choice(string.digits) for _ in range(N))
+    return HttpResponse(random_string)
 
 #alphacode/(workplace_id)
 def workplace(request,workplace_id):
     try:
         groupName = RandomURLs.objects.get(random_url=workplace_id)
+        if (groupName.valid == False) or (groupName.isExpired(HOURS_OF_A_DAY, unit="hour")):
+            groupName.setValidity(False)
+            return redirect('error-view')
     except RandomURLs.DoesNotExist:
         return redirect('error-view')
     context = {
@@ -43,15 +53,14 @@ def workplace(request,workplace_id):
     }
     return render(request,'alphacode/workplace.html',context)
 
-
 def getTag(request):
     #       run ML function for the tag here
     #       input string
     #       output string
     data = request.GET.get('Smt')
+    # print(tag.tag(data))
     # json data is just a JSON string now. 
-    return HttpResponse(data)
-        
+    return HttpResponse(tag.tag(data))
 
 def error_page(request):
     context = {

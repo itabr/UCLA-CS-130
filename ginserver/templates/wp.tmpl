@@ -1,0 +1,164 @@
+<html>
+
+<head>
+	<title>{{ .title }}</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/codemirror/CodeMirror/master/lib/codemirror.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.34.0/theme/material.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.34.0/codemirror.min.js"></script>
+	<script src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/mode/python/python.min.js"></script>
+	<script src="/assets/diff_match_patch.js"></script>
+</head>
+
+<style>
+	.btn {
+		height: 2.5em;
+		width: 8em;
+		background-color: DeepSkyBlue;
+		color: white;
+		text-align: center;
+		text-decoration: none;
+		font-size: 16px;
+		cursor: pointer;
+		float: right;
+
+		border-top: 6px solid #2A3139;
+		border-bottom: 6px solid #2A3139;
+		border-right: 6px solid #2A3139;
+		border-left: 6px solid #2A3139;
+
+	}
+
+	.CodeMirror {
+		height: calc(100% - 3em);
+		clear: both;
+	}
+
+	.header {
+		height: 2.5em;
+		width: 100%;
+		background-color: #293237;
+	}
+</style>
+
+<body>
+	<div class="header">
+		<p style="color:white; font-size: 24px; font-family: Monospace; margin: 6px; float: left;">
+			<b>{{ .title }}</b>
+		</p>
+		<p style="color:white; font-size: 24px; font-family: Monospace; margin: 6px; float: left; padding-left: 25%;">Tag :
+			<span id="tag"></span>
+		</p>
+		<input id="TagBtn" class="btn" type="button" value="get tag !" />
+	</div>
+
+	<textarea id="editor">{{.data}}</textarea>
+
+	<!-- <input id="SendBtn" class="btn" type="button" value="send" /> -->
+
+	<script>
+
+		$("#TagBtn").click(function () {
+			var val = doc.getValue().match(/###(\W*.*\W*.*\W*)###/g);
+
+			if ( val)
+			{
+				var result = val.map(function(val){ 
+					val = val.replace('\n','')
+					val = val.replace('#','')
+					return val; 
+				});
+
+				if (result[0]) {
+				$.get({
+					url: "http://127.0.0.1:8000/ajax/", 
+					data: {
+						Smt: result[0],
+					},
+					success: function (response) {
+						$("#tag").text(response);
+            		}
+				});
+			}
+
+			}
+		});
+
+
+		let myTextArea = document.getElementById("editor");
+		let editor = CodeMirror.fromTextArea(myTextArea, {
+			lineNumbers: true,
+			lineWrapping: true,
+			autofocus: true,
+			theme: "material",
+            mode:  "python"
+		});
+
+
+		let doc = editor.getDoc();
+
+		let CursorPosition = editor.getCursor();
+
+
+		let url = "ws://" + window.location.host + "/ws/" + window.location.href.substr(window.location.href.lastIndexOf('/') + 1)  ;
+
+		console.log(url)
+
+		let ws = new WebSocket(url);
+
+		ws.onmessage = function (msg) {
+
+			let p = msg.data.replace("Diffs", "diffs");
+			p = p.replace("Length1", "length1");
+			p = p.replace("Length2", "length2");
+			p = p.replace("Start1", "start1");
+			p = p.replace("Start2", "start2");
+
+			let data = JSON.parse(p);
+
+
+			try {
+
+				for (var i in data) {
+					data[i].diffs = data[i].diffs.map(x => Object.values(x));
+				}
+
+			} catch (err) {
+				// editor.options.readOnly = true;
+				console.log(err.message)
+				console.log(data)
+			}
+
+			let dmp = new diff_match_patch();
+
+			let result = dmp.patch_apply(data, doc.getValue())
+			// console.log(result)
+
+			CursorPosition = editor.getCursor();
+
+			doc.setValue(result[0]);
+
+			editor.setCursor(CursorPosition);
+		};
+
+		editor.on('keyup', function () {
+			
+			ws.send(doc.getValue());
+		})
+
+		// console.log(doc.getLine(editor.getCursor()["line"]))
+		// doc.getLine(editor.getCursor()["line"])
+
+
+		// $("#SendBtn").click(function() {
+		// 	if (doc.getValue() !== "") {
+		// 		CursorPosition = editor.getCursor();
+		// 		ws.send(doc.getValue());
+		// 	}
+		// });
+	</script>
+
+</body>
+
+</html>

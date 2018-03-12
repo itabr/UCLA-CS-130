@@ -14,10 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+# from django.urls import path
 from django.conf.urls import url, include
+from alphacode import views
+
+admin.autodiscover()
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-	url('alphacode/', include('alphacode.urls'))
+    url('admin/', admin.site.urls),
+	url('alphacode/', include('alphacode.urls')),
+    url('create/', views.create),
+    url('createapi/', views.createapi),
+    url(r'^(?P<workplace_id>[0-9]+)/$', views.workplace, name='workplace-view'),
+    url(r'ajax/', views.getTag, name='ajax-view'),
 ]
