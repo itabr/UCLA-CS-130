@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.34.0/theme/material.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.34.0/codemirror.min.js"></script>
 	<script src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/mode/go/go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/mode/python/python.min.js"></script>
 	<script src="/assets/diff_match_patch.js"></script>
 </head>
 
@@ -58,31 +58,30 @@
 	<!-- <input id="SendBtn" class="btn" type="button" value="send" /> -->
 
 	<script>
-		// $("#TagBtn").click(function () {
-		// 	var val = doc.getValue();
-		// 	if (val) {
-		// 		$.get("/ajax", {
-		// 				Smt: val,
-		// 				Tag: ""
-		// 			},
-		// 			function (data) {
-		// 				$("#tag").text(data.Tag);
-		// 			});
-		// 	}
-		// });
 
 		$("#TagBtn").click(function () {
-			var val = doc.getValue();
-			if (val) {
+			var val = doc.getValue().match(/###(\W*.*\W*.*\W*)###/g);
+
+			if ( val)
+			{
+				var result = val.map(function(val){ 
+					val = val.replace('\n','')
+					val = val.replace('#','')
+					return val; 
+				});
+
+				if (result[0]) {
 				$.get({
 					url: "http://127.0.0.1:8000/ajax/", 
 					data: {
-						Smt: val,
+						Smt: result[0],
 					},
 					success: function (response) {
 						$("#tag").text(response);
             		}
 				});
+			}
+
 			}
 		});
 
@@ -93,7 +92,7 @@
 			lineWrapping: true,
 			autofocus: true,
 			theme: "material",
-			mode: "text/x-go",
+            mode:  "python"
 		});
 
 
@@ -101,7 +100,11 @@
 
 		let CursorPosition = editor.getCursor();
 
-		let url = "ws://" + window.location.host + "/ws";
+
+		let url = "ws://" + window.location.host + "/ws/" + window.location.href.substr(window.location.href.lastIndexOf('/') + 1)  ;
+
+		console.log(url)
+
 		let ws = new WebSocket(url);
 
 		ws.onmessage = function (msg) {

@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sergi/go-diff/diffmatchpatch"
@@ -19,27 +20,31 @@ func main() {
 	r := gin.Default()
 
 	r.Static("/assets", "./assets")
+	r.StaticFile("/bg.jpg", "./assets/bg.jpg")
+	r.StaticFile("/giphy.gif", "./assets/giphy.gif")
 
 	r.LoadHTMLGlob("templates/*")
 
 	m := melody.New()
 
-	r.GET("/", GetHomePage)
-
 	r.GET("/create", Create)
 
-	r.GET("/ajax", Ajax)
+	r.GET("/new", Create)
+
+	r.GET("/", GetHomePage)
 
 	r.GET("/workplace/:key", Workplace)
 
-	r.GET("/ws", func(c *gin.Context) {
+	r.GET("/ws/:key", func(c *gin.Context) {
 
 		m.HandleRequest(c.Writer, c.Request)
 	})
 
 	m.HandleMessage(func(s *melody.Session, msg []byte) {
 
-		f, err := os.OpenFile("workplaces/test", os.O_RDWR, 0755)
+		key := strings.Split(s.Request.RequestURI, "/")[2]
+
+		f, err := os.OpenFile("workplaces/"+key, os.O_RDWR, 0755)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -62,9 +67,9 @@ func main() {
 		}
 		if len(patchs) > 0 {
 			result, applied := dmp.PatchApply(patchs, string(b))
-			fmt.Println(result, applied)
-
-			ioutil.WriteFile("workplaces/test", []byte(result), 0644)
+			if applied[0] {
+			}
+			ioutil.WriteFile("workplaces/"+key, []byte(result), 0644)
 			m.BroadcastOthers([]byte(data), s)
 		}
 
@@ -72,11 +77,6 @@ func main() {
 	})
 
 	r.Run(":8080")
-}
-
-type Problem struct {
-	Stmt string
-	Tag  string
 }
 
 //  /
@@ -93,7 +93,6 @@ func Create(c *gin.Context) {
 	if err != nil {
 		// handle error
 	}
-	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		// handle error
@@ -102,20 +101,6 @@ func Create(c *gin.Context) {
 
 	key := "test"
 	c.Redirect(http.StatusMovedPermanently, "/workplace/"+key)
-}
-
-// /ajax
-func Ajax(c *gin.Context) {
-	var p Problem
-	q := c.Request.URL.Query()
-	p.Stmt = q["Smt"][0]
-	if p.Stmt != "" {
-
-		p.Tag = string("some tag")
-		c.JSON(http.StatusOK, gin.H{"status": "StatusOK", "Tag": p.Tag})
-	} else {
-		c.JSON(http.StatusNoContent, gin.H{"status": "StatusOK", "Tag": ""})
-	}
 }
 
 // /workplace/:key
@@ -134,9 +119,11 @@ func Workplace(c *gin.Context) {
 
 	b := make([]byte, FileInfo.Size())
 	f.Read(b)
+	f.Close()
 
 	c.HTML(http.StatusOK, "wp.tmpl", gin.H{
-		"title": "AlphaCode",
-		"data":  string(b),
+		"title":    "AlphaCode",
+		"data":     string(b),
+		"filename": key,
 	})
 }
