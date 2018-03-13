@@ -79,9 +79,7 @@ class TagPredictor(object):
 
 	def predict(self, sample):
 		predictions = []
-
 		for label in self.label_classifiers:
 			if self.label_classifiers[label].predict(sample) >= confidence_threshold:
 				predictions.append(label)
-
 		return predictions
