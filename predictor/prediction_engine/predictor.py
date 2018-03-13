@@ -8,11 +8,12 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from keras.preprocessing.text import hashing_trick
 from keras.models import load_model
 from sklearn.externals import joblib
+from keras.preprocessing import sequence
 
 
 tfidf_labels = ["math", "dp", "datastructure", "greedy", "graphs", "probabilities", "sortings", "strings", "numbertheory"]
 nn_labels = ["combinatorics", "games", "geometry", "search"]
-hashing_trick_max_features = 20000
+hashing_trick_max_features = 5000
 nn_features_max_size = 5000
 confidence_threshold = .5
 
@@ -23,7 +24,7 @@ class TFIDFMapper(object):
 		data = data.dropna()
 
 		self.vectorizer = TfidfVectorizer(stop_words="english", analyzer = 'word')
-		l = (data['input-spec'].astype(str) + (data['problem-statement'].astype(str) + data['output-spec'])) .tolist()
+		l = data['ps'] = (data['problem-statement'].astype(str) + data['output-spec']) .tolist()
 		res = []
 		self.regex = re.compile("^a-zA-Z0-9\ '" )
 		for i in range(len(l)):
@@ -33,14 +34,17 @@ class TFIDFMapper(object):
 		        res.append("")
 		self.vectorizer.fit(res)
 
+	def clean_string(self, input_str):
+		return self.regex.sub(' ', input_str)
+
 	def map_sample(self, sample):
-		return self.vectorizer.transform([sample])
+		return self.vectorizer.transform([self.clean_string(sample)])
 
 
 class NNMapper(object):
 	def map_sample(self, sample):
 		features = hashing_trick(sample, hashing_trick_max_features)
-		return features + [0] * (nn_features_max_size - len(features))
+		return sequence.pad_sequences([features], nn_features_max_size)
 
 
 class SKLClassifier(object):
@@ -49,7 +53,7 @@ class SKLClassifier(object):
 		self.mapper_fn = mapper_fn
 
 	def predict(self, sample):
-		return self.clf.predict(self.mapper_fn(sample))
+		return self.clf.predict(self.mapper_fn(sample))[0]
 
 
 class KerasClassifier(object):
@@ -58,7 +62,7 @@ class KerasClassifier(object):
 		self.mapper_fn = mapper_fn
 
 	def predict(self, sample):
-		return self.clf.predict(self.mapper_fn(sample))
+		return self.clf.predict(self.mapper_fn(sample))[0][0]
 
 
 class TagPredictor(object):
