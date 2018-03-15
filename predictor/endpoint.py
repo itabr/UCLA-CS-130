@@ -22,7 +22,7 @@ def responder():
 		return jsonify({'error': "incorrect input format: input key must be 'data', and input value must be a string"}), 400
 	try:
 		if type(prob_st) is str or type(prob_st) is unicode:
-			return jsonify({"prediction": str(predictor.predict(prob_st))})
+			return jsonify({"prediction": predictor.predict(prob_st)})
 		else:
 			return jsonify({'error': 'incorrect input format: input value must be a string'}), 400
 	except Exception, e:

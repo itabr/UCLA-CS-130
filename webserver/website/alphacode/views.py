@@ -10,7 +10,7 @@ import threading
 from alphacode.models import RandomURLs
 from django.utils import timezone
   
-from alphacode.machine_learning import tag
+import requests
 
 HOURS_OF_A_DAY = 24
 #alphacode/
@@ -74,9 +74,27 @@ def getTag(request):
     #       input string
     #       output string
     data = request.GET.get('Smt')
-    # print(tag.tag(data))
-    # json data is just a JSON string now. 
-    return HttpResponse(tag.tag(data))
+    predictor_server_path = "http://localhost:5000"
+    try:
+        r = requests.post(predictor_server_path, json={'data': data})
+    except Exception, e:
+        print "Predictor Server inaccessible!  Default tag 'implementation' used."
+        print "Error: " + str(e)
+        return HttpResponse("implementation")
+    try:
+        if r.status_code == 200:
+            resp = r.json()['prediction']
+            if len(resp) > 0:
+                return HttpResponse(", ".join(resp))
+            else:
+                return HttpResponse("N/A")
+        else:
+            print "Predictor Server returned error code!  Default tag 'implementation' used."
+            return HttpResponse('implementation')
+    except Exception, e:
+        print "Encountered internal error while parsing Predictor Server response!  Default tag 'implementation' used."
+        print "Error: " + str(e)
+        return HttpResponse('implementation')
 
 def error_page(request):
     context = {
