@@ -31,12 +31,28 @@ def create(request):
     Row.save()
     return redirect(workplace, workplace_id=random_string)
 
-
+#Create Page API
 def createapi(request):
     groupName = "alphacode"
     N = 16
     random_string = ''.join(random.choice(string.digits) for _ in range(N))
+    Row = RandomURLs(random_url=random_string, group_name=groupName, timestamp=timezone.now(), valid=True)
+    Row.save()
     return HttpResponse(random_string)
+
+#Check validity API
+def verify_url_api(request):
+    workplace_url = request.GET.get('key')
+    url_row = RandomURLs.objects.get(random_url = workplace_url)
+    
+    try:
+        if (url_row.valid == False) or (url_row.isExpired(HOURS_OF_A_DAY, unit="hour")):
+            url_row.setValidity(False)
+            return HttpResponse("False")
+    except url_row.DoesNotExist:
+        return HttpResponse("False")
+    
+    return HttpResponse("True")
 
 #alphacode/(workplace_id)
 def workplace(request,workplace_id):
