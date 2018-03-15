@@ -4,6 +4,7 @@ import re
 import pandas
 import keras
 import sklearn
+import nltk
 from sklearn.feature_extraction.text import TfidfVectorizer
 from keras.preprocessing.text import hashing_trick
 from keras.models import load_model
@@ -15,15 +16,14 @@ tfidf_labels = ["math", "dp", "datastructure", "greedy", "graphs", "probabilitie
 nn_labels = ["combinatorics", "games", "geometry", "search"]
 hashing_trick_max_features = 5000
 nn_features_max_size = 5000
-confidence_threshold = .5
+confidence_threshold = .55
 
 
 class TFIDFMapper(object):
-	def __init__(self, prefix):
+	def __init__(self, prefix=""):
+		self.vectorizer = TfidfVectorizer(stop_words="english",analyzer = 'word')
 		data = pandas.read_csv(prefix + 'data.csv')
 		data = data.dropna()
-
-		self.vectorizer = TfidfVectorizer(stop_words="english", analyzer = 'word')
 		l = data['ps'] = (data['problem-statement'].astype(str) + data['output-spec']) .tolist()
 		res = []
 		self.regex = re.compile("^a-zA-Z0-9\ '" )
@@ -53,7 +53,7 @@ class SKLClassifier(object):
 		self.mapper_fn = mapper_fn
 
 	def predict(self, sample):
-		return self.clf.predict(self.mapper_fn(sample))[0]
+		return self.clf.predict_proba(self.mapper_fn(sample))[0][1]
 
 
 class KerasClassifier(object):
