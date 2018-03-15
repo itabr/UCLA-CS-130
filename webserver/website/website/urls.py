@@ -25,6 +25,7 @@ urlpatterns = [
 	url('alphacode/', include('alphacode.urls')),
     url('create/', views.create),
     url('createapi/', views.createapi),
+    url('verify_url_api/', views.verify_url_api),
     url(r'^(?P<workplace_id>[0-9]+)/$', views.workplace, name='workplace-view'),
     url(r'ajax/', views.getTag, name='ajax-view'),
 ]
