@@ -4,7 +4,6 @@ import re
 import pandas
 import keras
 import sklearn
-import nltk
 from sklearn.feature_extraction.text import TfidfVectorizer
 from keras.preprocessing.text import hashing_trick
 from keras.models import load_model
