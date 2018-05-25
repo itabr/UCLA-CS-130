@@ -1,7 +1,7 @@
 # CS130
 CS130 open source project
 
-## Luanching the server (Local)
+## Launching the server (Local)
 
 1. Download the source code to your desired path
 
